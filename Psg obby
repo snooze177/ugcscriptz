@@ -1,0 +1,21 @@
+local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character
+local HumanoidRootPart = Character:FindFirstChild("HumanoidRootPart")
+
+local function AutoCollectBalls()
+    while true do
+        for _, part in pairs(workspace:GetDescendants()) do
+            if part:IsA("Part") and part.Name == "Ball" then
+                local distance = (HumanoidRootPart.Position - part.Position).Magnitude
+                if distance < 10 then
+                    part.CFrame = HumanoidRootPart.CFrame
+                end
+            end
+        end
+        wait(0.1)
+    end
+end
+
+AutoCollectBalls()
