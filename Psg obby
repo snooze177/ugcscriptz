@@ -1,21 +1,72 @@
-local Players = game:GetService("Players")
-local TweenService = game:GetService("TweenService")
-local LocalPlayer = Players.LocalPlayer
-local Character = LocalPlayer.Character
-local HumanoidRootPart = Character:FindFirstChild("HumanoidRootPart")
+-- GUI Library
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/wizard"))()
 
-local function AutoCollectBalls()
-    while true do
-        for _, part in pairs(workspace:GetDescendants()) do
-            if part:IsA("Part") and part.Name == "Ball" then
-                local distance = (HumanoidRootPart.Position - part.Position).Magnitude
-                if distance < 10 then
-                    part.CFrame = HumanoidRootPart.CFrame
-                end
+-- Create Window
+local Window = Library:NewWindow("PSG Obby")
+
+-- Main Section
+local MainSection = Window:NewSection("Credits:snooze")
+MainSection:CreateButton("Click to copy", function()
+    setclipboard("https://www.youtube.com/@snoozehh")
+end)
+
+-- Auto Collect Section
+local AutoCollectSection = Window:NewSection("Auto Features")
+local AutoCollectToggle = AutoCollectSection:CreateToggle("Auto Collect Balls", function(state)
+    _G.AutoCollect = state
+    while _G.AutoCollect and task.wait() do
+        -- Auto collect logic here
+    end
+end)
+
+-- Rejoin Section
+local RejoinSection = Window:NewSection("Rejoin")
+RejoinSection:CreateButton("Rejoin Game", function()
+    game:GetService("TeleportService"):Teleport(game.PlaceId)
+end)
+
+-- Notification
+game:GetService("StarterGui"):SetCore("SendNotification", {
+    Title = "Hi",
+    Text = "Made by snooze",
+    Duration = 5,
+    Button1 = "Enjoy"
+})
+
+-- Bacon script (appears to be a ball collection/gravity manipulation script)
+local bacon = game:GetService("Players").LocalPlayer
+local chr = bacon.Character or bacon.CharacterAdded:Wait()
+local hum = chr:WaitForChild("HumanoidRootPart")
+
+local main = Instance.new("Part")
+main.Name = "Main"
+main.Size = Vector3.new(10, 10, 10)
+main.Transparency = 1
+main.Anchored = true
+main.CanCollide = false
+main.Velocity = Vector3.new(0, 0, 0)
+main.Position = Vector3.new(0, 100, 0)
+main.Parent = workspace
+
+local temp = Instance.new("Part")
+temp.Name = "Temp"
+temp.Size = Vector3.new(10, 10, 10)
+temp.Transparency = 1
+temp.Anchored = true
+temp.CanCollide = false
+temp.Velocity = Vector3.new(0, 0, 0)
+temp.Position = Vector3.new(0, 100, 0)
+temp.Parent = workspace
+
+while task.wait() do
+    for i, v in pairs(workspace:GetDescendants()) do
+        if v:IsA("Part") and v.Name == "Ball" then
+            local mag = (v.Position - hum.Position).Magnitude
+            if mag < 50 then
+                v.CFrame = hum.CFrame
+                task.wait()
+                v:Destroy()
             end
         end
-        wait(0.1)
     end
 end
-
-AutoCollectBalls()
