@@ -1,0 +1,37 @@
+local Wizard = loadstring(game:HttpGet("https://raw.githubusercontent.com/XRoLLu/ui-libs/main/wizard.lua"))()
+
+local Window = Wizard:CreateWindow("Outfit Buyer", "Auto-buy outfits from stands")
+
+local MainTab = Window:CreateTab("Outfit creator ideas")
+local MainSection = MainTab:CreateSection("ugc purchase")
+
+MainSection:CreateButton("INSTANT UGC", function()
+    local args = {
+        [1] = {
+            [1] = {
+                ["Id"] = 108753574720506,
+                ["InfoType"] = Enum.InfoType.Asset
+            }
+        }
+    }
+    
+    game:GetService("ReplicatedStorage").OutfitStandRS.Remotes.BuyAll:FireServer(unpack(args))
+    Wizard:Notification("Success")
+end)
+
+local YTTab = Window:CreateTab("YT: @snoozehh")
+local YTSection = YTTab:CreateSection("YouTube Channel")
+
+YTSection:CreateButton("Copy YouTube Link", function()
+    local youtubeLink = "https://www.youtube.com/@snoozehh"
+    
+    if setclipboard then
+        setclipboard(youtubeLink)
+        Wizard:Notification("Copied!", "YouTube link copied to clipboard!")
+    else
+        Wizard:Notification("Info", "Please manually copy: " .. youtubeLink)
+    end
+end)
+
+YTSection:CreateLabel("Subscribe to @snoozehh on YouTube!")
+YTSection:CreateLabel("For more cool scripts and content!")
