@@ -1,35 +1,59 @@
-local player = game.Players.LocalPlayer
-local character = player.Character or player.CharacterAdded:Wait()
-local humanoid = character:WaitForChild("Humanoid")
+local Library = loadstring(Game:HttpGet("https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/wizard"))()
 
--- Ждем, пока появится HumanoidRootPart (основная часть персонажа)
-local rootPart = character:WaitForChild("HumanoidRootPart")
+local PhantomForcesWindow = Library:NewWindow("Unicorn UGC")
 
--- Функция для поиска всех монет в Workspace
-local function getCoins()
-    local coins = {}
-    for _, item in ipairs(workspace:GetDescendants()) do
-        if item.Name == "Coin" and item:IsA("Model") then
-            table.insert(coins, item)
-        end
-    end
-    return coins
-end
+local KillingCheats = PhantomForcesWindow:NewSection("Main")
 
--- Основной цикл телепортации
-while true do
-    local coins = getCoins()
-    
-    if #coins > 0 then
-        for _, coin in ipairs(coins) do
-            if coin:IsA("Model") and coin.PrimaryPart then
-                -- Телепортируемся к монете с небольшим отступом сверху (чтобы не застрять)
-                rootPart.CFrame = coin.PrimaryPart.CFrame * CFrame.new(0, 3, 0)
-                wait(1) -- Ждем 1 секунду перед следующей телепортацией
+-- Toggle kontrolü için bir değişken
+
+local toggleActive = false
+
+-- Toggle oluşturuluyor
+
+KillingCheats:CreateToggle("Auto Coin Collect", function(value)
+
+    toggleActive = value
+
+    if value then
+
+        -- Toggle açıldığında çalışacak döngü
+
+        task.spawn(function()
+
+            while toggleActive do
+
+                local args = {
+
+                    1
+
+                }
+
+                game:GetService("ReplicatedStorage"):WaitForChild("Overture"):WaitForChild("RemoteEvent"):WaitForChild("LocalCoinCollected"):FireServer(unpack(args))
+
+                wait(2)
+
             end
-        end
-    else
-        warn("Монет не найдено! Проверьте, есть ли модели с именем 'Coin' в игре.")
-        wait(1)
+
+        end)
+
     end
-end
+
+end)
+
+local Section = PhantomForcesWindow:NewSection("YT: @snoozehh")
+
+Section:CreateButton("Copy Link!", function()
+
+    setclipboard("https://youtube.com/@snoozehh")
+
+    game.StarterGui:SetCore("SendNotification", {
+
+        Title = "Copied!";
+
+        Text = "YouTube link copied to clipboard!";
+
+        Duration = 2;
+
+    })
+
+end)
