@@ -1,0 +1,35 @@
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+
+-- Ждем, пока появится HumanoidRootPart (основная часть персонажа)
+local rootPart = character:WaitForChild("HumanoidRootPart")
+
+-- Функция для поиска всех монет в Workspace
+local function getCoins()
+    local coins = {}
+    for _, item in ipairs(workspace:GetDescendants()) do
+        if item.Name == "Coin" and item:IsA("Model") then
+            table.insert(coins, item)
+        end
+    end
+    return coins
+end
+
+-- Основной цикл телепортации
+while true do
+    local coins = getCoins()
+    
+    if #coins > 0 then
+        for _, coin in ipairs(coins) do
+            if coin:IsA("Model") and coin.PrimaryPart then
+                -- Телепортируемся к монете с небольшим отступом сверху (чтобы не застрять)
+                rootPart.CFrame = coin.PrimaryPart.CFrame * CFrame.new(0, 3, 0)
+                wait(1) -- Ждем 1 секунду перед следующей телепортацией
+            end
+        end
+    else
+        warn("Монет не найдено! Проверьте, есть ли модели с именем 'Coin' в игре.")
+        wait(1)
+    end
+end
