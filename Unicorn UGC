@@ -4,19 +4,13 @@ local PhantomForcesWindow = Library:NewWindow("Unicorn UGC")
 
 local KillingCheats = PhantomForcesWindow:NewSection("Main")
 
--- Toggle kontrolü için bir değişken
-
 local toggleActive = false
-
--- Toggle oluşturuluyor
 
 KillingCheats:CreateToggle("Auto Coin Collect", function(value)
 
     toggleActive = value
 
     if value then
-
-        -- Toggle açıldığında çalışacak döngü
 
         task.spawn(function()
 
